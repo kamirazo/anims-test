@@ -1,0 +1,30 @@
+@use '../../styles/variables' as *;
+
+.horizontal-scroller {
+  height: 100vh;
+  display: flex;
+  flex-wrap: nowrap;
+  transform: translateX(var(--horizontal-scroller-translate));
+  overscroll-behavior: none;
+
+  &-viewport {
+    height: var(--horizontal-scroller-height);
+    position: relative;
+    background: linear-gradient(135deg, $color_black 40%, $color_red_0);
+
+    &__inner {
+      position: sticky;
+      top:0;
+      left:0;
+      overflow: hidden;
+    }
+  }
+
+  > .section {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 2rem;
+    flex-shrink: 0;
+    color: $color_white;
+  }
+}

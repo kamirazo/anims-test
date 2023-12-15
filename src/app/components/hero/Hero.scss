@@ -1,0 +1,86 @@
+@use '../../styles/variables' as *;
+
+@keyframes heroTitleFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(.8em);
+  }
+  25% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero {
+  color: $color_white;
+  
+  &__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+
+    &__background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      object-fit: cover;
+    }
+    
+    &__title {
+      $opacity-progress-ratio: .5;
+      $translation-progress-ratio: .4;
+
+      font-size: clamp(4rem, 10vw, 8rem);
+      transform: translateY(calc(
+        max(0, var(--hero-header-scroll-progress) - $translation-progress-ratio)
+        * -1.5em
+        / $translation-progress-ratio
+      ));
+      opacity: calc(
+        1 - (
+          max(0, var(--hero-header-scroll-progress) - $opacity-progress-ratio)
+          / $opacity-progress-ratio
+        )
+      );
+      animation-duration: .8s;
+      animation-delay: .4s;
+      animation-name: heroTitleFadeIn;
+      animation-timing-function: ease-out;
+      animation-fill-mode: backwards;
+    }
+  }
+
+  &__mainPoints {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    padding: 50vh 0 25vh 0;
+    margin: 0;
+    list-style-type: none;
+    position: relative;
+
+    &__item {
+      width: 60%;
+      padding: 1.5em 0;
+      opacity: 0;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      transition: opacity .8s ease-out;
+
+      &--active {
+        opacity: 1;
+      }
+    }
+  }
+}

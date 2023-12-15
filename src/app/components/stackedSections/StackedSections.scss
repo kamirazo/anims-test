@@ -1,0 +1,42 @@
+@use '../../styles/variables' as *;
+
+.stacked-sections {
+  $self: &;
+
+  overscroll-behavior: none;
+
+  &-viewport {
+    height: calc(100vh * var(--stacked-section-children-length));
+    position: relative;
+
+    &__inner {
+      height: 100vh;
+      position: sticky;
+      top:0;
+      left:0;
+      overflow: hidden;
+      background-color: $color_grey_0;
+    }
+  }
+
+  &__child {
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, $color_grey_0 40%, $color_red_1);
+    transform: translateY(25%);
+    transition: transform .6s cubic-bezier(.25,.46,.45,.94);
+
+    &--active {
+      transform: translateY(0);
+
+      ~ #{$self}__child {
+        transform: translateY(100%);
+      }
+    }
+  }
+}
