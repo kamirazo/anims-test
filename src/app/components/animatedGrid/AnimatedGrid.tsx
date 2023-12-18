@@ -8,12 +8,10 @@ interface GridProps {
 
 const AnimatedGrid = ({displayType, children}: GridProps) => {
   const [scope, animate] = useAnimate()
-  const isInView = useInView(scope)
+  const isInView = useInView(scope, {amount : .25})
 
   useEffect(() => {
     if (!scope.current?.childNodes) return
-
-    const staggerAnimatedGridItems = stagger(0.1, { startDelay: 0.5 })
 
     animate(
       scope.current.childNodes,
@@ -22,7 +20,7 @@ const AnimatedGrid = ({displayType, children}: GridProps) => {
         : { opacity: 0, y: 50 },
       {
         duration: 0.3,
-        delay: isInView ? staggerAnimatedGridItems : 0
+        delay: stagger(0.1)
       }
     )
   }, [isInView, animate, scope])
