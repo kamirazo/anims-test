@@ -1,26 +1,29 @@
-$color_black: #000;
-$color_white: #fff;
+$colors: (
+  'black': #000,
+  'white': #fff,
+  'grey-0': #efefef,
+  'grey-1': #cccccc,
+  'grey-2': #4c4c4c,
+  'green-0': #0a8035,
+  'green-1': #e7f2eb,
+  'red-0': #e00034,
+  'red-1': #f5e7ea,
+);
 
-$color_grey_0: #efefef;
-$color_grey_1: #cccccc;
-$color_grey_2: #4c4c4c;
+$breakpoints: (
+  'md': 768px,
+  'lg': 1024px
+);
 
-$color_green_0: #0a8035;
-$color_green_1: #e7f2eb;
-
-$color_red_0: #e00034;
-$color_red_1: #f5e7ea;
-
-$breakpoint_md: 768px;
-$breakpoint_lg: 1024px;
-
-$spacing_1: .25rem;
-$spacing_2: .5rem;
-$spacing_3: 1rem;
-$spacing_4: 1.5rem;
-$spacing_5: 2rem;
-$spacing_6: 2.5rem;
-$spacing_7: 3rem;
-$spacing_8: 3.5rem;
-$spacing_9: 4rem;
-$spacing_10: 5rem;
+$spacings: (
+  1: .25rem,
+  2: .5rem,
+  3: 1rem,
+  4: 1.5rem,
+  5: 2rem,
+  6: 2.5rem,
+  7: 3rem,
+  8: 3.5rem,
+  9: 4rem,
+  10: 5rem,
+)

@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, useRef, useState } from 'react'
+import { CSSProperties, ReactNode, useRef, useState } from 'react'
 import { useLenis } from '@studio-freight/react-lenis'
 import { InView } from 'react-intersection-observer'
 
@@ -36,13 +36,13 @@ const Hero = ({ title, mainPoints }: HeroProps) => {
           <source src="https://a.storyblok.com/f/172651/x/4f4d52f469/nissannismo_ariya_2022-11-14.mp4" type="video/mp4" />
         </video>
 
-        <h1 style={{ '--hero-header-scroll-progress': heroHeaderScrollProgress }} className='hero__header__title'>
+        <h1 style={{ '--hero-header-scroll-progress': heroHeaderScrollProgress } as CSSProperties} className='hero__header__title'>
           {title}
         </h1>
       </header>
       
       {mainPoints && (
-        <ul className='hero__mainPoints section'>
+        <ul className='hero__mainPoints'>
           {mainPoints.map((mainPoint) => (
             <InView key={mainPoint} rootMargin='-45% 0px -45% 0px'>
               {({ inView, ref }) => (

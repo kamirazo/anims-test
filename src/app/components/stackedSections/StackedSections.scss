@@ -15,7 +15,7 @@
       top:0;
       left:0;
       overflow: hidden;
-      background-color: $color_grey_0;
+      background-color:  map-get($colors, 'grey-0');
     }
   }
 
@@ -27,7 +27,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: linear-gradient(135deg, $color_grey_0 40%, $color_red_1);
+    background: linear-gradient(135deg,  map-get($colors, 'grey-0') 40%,  map-get($colors, 'red-1'));
     transform: translateY(25%);
     transition: transform .6s cubic-bezier(.25,.46,.45,.94);
 

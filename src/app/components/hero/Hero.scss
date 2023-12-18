@@ -3,7 +3,7 @@
 @keyframes heroTitleFadeIn {
   0% {
     opacity: 0;
-    transform: translateY(.8em);
+    transform: translateY(map-get($spacings, 2));
   }
   25% {
     opacity: 0;
@@ -15,7 +15,7 @@
 }
 
 .hero {
-  color: $color_white;
+  color: map-get($colors, 'white');
   
   &__header {
     display: flex;

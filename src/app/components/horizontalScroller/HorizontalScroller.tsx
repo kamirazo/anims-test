@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, useRef, useEffect, useState } from 'react'
+import { ReactNode, useRef, useEffect, useState, CSSProperties } from 'react'
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
 
 import './HorizontalScroller.scss'
@@ -33,11 +33,11 @@ const HorizontalScroller = ({
   return (
     <section ref={horizontalScrollerViewportRef}
       className="horizontal-scroller-viewport"
-      style={{'--horizontal-scroller-height': `${horizontalScrollerViewportWidth}px`}}>
+      style={{'--horizontal-scroller-height': `${horizontalScrollerViewportWidth}px`} as CSSProperties}>
       <div className="horizontal-scroller-viewport__inner">
         <motion.div
           className="horizontal-scroller"
-          style={{ '--horizontal-scroller-translate': `${horizontalScrollerTranslateValue}px`}}
+          style={{ '--horizontal-scroller-translate': `${horizontalScrollerTranslateValue}px`} as CSSProperties}
           ref={horizontalScrollerRef}>
           {children}
         </motion.div>

@@ -10,7 +10,7 @@
   &-viewport {
     height: var(--horizontal-scroller-height);
     position: relative;
-    background: linear-gradient(135deg, $color_black 40%, $color_red_0);
+    background: linear-gradient(135deg, map-get($colors, 'black') 40%, map-get($colors, 'red-0'));
 
     &__inner {
       position: sticky;
@@ -21,10 +21,7 @@
   }
 
   > .section {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 2rem;
     flex-shrink: 0;
-    color: $color_white;
+    color:  map-get($colors, 'white');
   }
 }
