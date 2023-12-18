@@ -7,6 +7,7 @@ import ScaleBgSection from './components/scaleBgSection/ScaleBgSection';
 import StackedSections from './components/stackedSections/StackedSections';
 import Card from './components/card/Card';
 import AnimatedGrid from './components/animatedGrid/AnimatedGrid';
+import ImgTextSection from './components/imgTextSection/ImgTextSection';
 
 // Inspi
 // https://www.renault.fr/vehicules-electriques/scenic-e-tech-electrique.html
@@ -21,7 +22,7 @@ import AnimatedGrid from './components/animatedGrid/AnimatedGrid';
 // https://www.framer.com/motion/
 
 export default function Home() {
-  const cardContent = () => {
+  const basicParagraph = () => {
     return (
       <p>Rerum alias sequi sed. Hic eveniet commodi aliquam. Ullam maxime explicabo voluptatibus accusantium omnis quo modi.</p>
     )
@@ -35,15 +36,24 @@ export default function Home() {
         </ScaleBgSection>
         <HorizontalScroller>
           <section className="section">
+            Hor Section 1
             <div className="grid grid--halves">
-              <Card title="Card title" content={cardContent()} inDarkContext />
-              <Card title="Card title" content={cardContent()} inDarkContext />
+              <Card title="Card title" content={basicParagraph()} inDarkContext />
+              <Card title="Card title" content={basicParagraph()} inDarkContext />
             </div>
           </section>
-          <section className="section">Hor Section 2</section>
+          <section className="section">
+            Hor Section 2
+            <AnimatedGrid displayType='thirds'>
+              <Card image={{url:'/img/testAnimImg.png'}} title="Card title" content={basicParagraph()} inDarkContext />
+              <Card title="Card title" content={basicParagraph()} inDarkContext />
+              <Card title="Card title" content={basicParagraph()} inDarkContext />
+            </AnimatedGrid>
+          </section>
           <section className="section">Hor Section 3</section>
           <section className="section">Hor Section 4</section>
         </HorizontalScroller>
+        <ImgTextSection image={{url:'/img/testAnimImg.png'}} title="Card title" content={basicParagraph()} />
         <StackedSections>
           <section className="section">Stacked Section 1</section>
           <section className="section">Stacked Section 2</section>
@@ -52,9 +62,9 @@ export default function Home() {
         </StackedSections>
         <div className="section">
           <AnimatedGrid displayType='thirds'>
-            <Card image={{url:'/img/testAnimImg.png'}}  title="Card title" content={cardContent()} />
-            <Card title="Card title" content={cardContent()} />
-            <Card title="Card title" content={cardContent()} />
+            <Card image={{url:'/img/testAnimImg.png'}} title="Card title" content={basicParagraph()} />
+            <Card title="Card title" content={basicParagraph()} />
+            <Card title="Card title" content={basicParagraph()} />
           </AnimatedGrid>
         </div>
       </main>

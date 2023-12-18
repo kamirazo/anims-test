@@ -1,0 +1,27 @@
+.img-text-section {
+  position: relative;
+  overflow: hidden;
+
+  &__content {
+    opacity: 0;
+    transform: translate(25%, 4rem);
+    transition: opacity .6s .2s ease-out,
+      transform .8s ease-in-out;
+
+    &--in-view {
+      opacity: 1;
+      transform: translate(25%, 0);
+    }
+  }
+
+  &__image {
+    width: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    z-index: -1;
+    transform-origin: right center;
+    transform: translateY(-50%) scale(calc(1 - var(--img-text-section-scroll-progress) * .5));
+  }
+}

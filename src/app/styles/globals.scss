@@ -25,13 +25,23 @@ body {
   width: 100%;
   height: 100vh;
   padding: map-get($spacings, 9) map-get($spacings, 5);
+
+  &--no-padding {
+    padding: 0;
+  }
+
+  &--center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .grid {
   display: grid;
 
   &:not(.grid--no-gutter) {
-    column-gap: map-get($spacings, 4);
+    gap: map-get($spacings, 4);
   }
 
   &--halves {
