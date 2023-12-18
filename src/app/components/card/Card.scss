@@ -1,0 +1,18 @@
+@use '../../styles/variables' as *;
+
+.card {
+  --border-color: var(--color-grey-1);
+  --text-color: var(--color-black);
+
+  &--dark {
+    --border-color: var(--color-grey-2);
+    --text-color: var(--color-white);
+  }
+
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+
+  &__content {
+    padding: map-get($spacings, 3);
+  }
+}

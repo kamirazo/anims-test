@@ -24,7 +24,7 @@ body {
   box-sizing: border-box;
   width: 100%;
   height: 100vh;
-  padding: 2rem;
+  padding: map-get($spacings, 9) map-get($spacings, 5);
 }
 
 .grid {
