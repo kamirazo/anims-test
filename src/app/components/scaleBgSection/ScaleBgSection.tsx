@@ -5,7 +5,6 @@ import Image from "next/image"
 import { motion, useScroll } from 'framer-motion'
 
 import './ScaleBgSection.scss'
-import testBgImg from '@/public/img/testAnimImg.png'
 
 const ScaleBgSection = ({
   children,
@@ -21,7 +20,7 @@ const ScaleBgSection = ({
   
   return (
     <motion.section ref={scaleBgSectionRef} style={{ '--scale-bg-section-scroll-progress': (scrollYProgress) } as CSSProperties} className="scale-bg-section section">
-      <Image src={testBgImg} alt="" className="scale-bg-section__bg-image" />
+      <Image src="/img/testAnimImg.png" fill alt="" className="scale-bg-section__bg-image" />
       {children}
     </motion.section>
   )

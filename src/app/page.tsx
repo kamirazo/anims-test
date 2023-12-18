@@ -52,7 +52,7 @@ export default function Home() {
         </StackedSections>
         <div className="section">
           <AnimatedGrid displayType='thirds'>
-            <Card title="Card title" content={cardContent()} />
+            <Card image={{url:'/img/testAnimImg.png'}}  title="Card title" content={cardContent()} />
             <Card title="Card title" content={cardContent()} />
             <Card title="Card title" content={cardContent()} />
           </AnimatedGrid>

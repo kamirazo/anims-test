@@ -11,6 +11,14 @@
 
   border: 1px solid var(--border-color);
   color: var(--text-color);
+  
+  &__image {
+    &-wrapper {
+      width: 100%;
+      aspect-ratio: 16/9;
+      position: relative;
+    }
+  }
 
   &__content {
     padding: map-get($spacings, 3);
