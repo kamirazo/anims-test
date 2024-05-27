@@ -1,0 +1,47 @@
+.section-title {
+  --mainTitleSize: clamp(2.5rem, 6vw, 4.75rem);
+  
+  text-align: center;
+
+  &-wrapper {
+    &--translateY {
+      animation: 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards translateY;
+    }
+  }
+
+  &__main-title {
+    padding: 0;
+    margin: 0;
+    font-size: clamp(2.5rem, 6vw, 4.75rem);
+    text-transform: uppercase;
+    color: white;
+  }
+
+  &--translateY {
+    --vPadding: var(--mainTitleSize);
+
+    width: 50%;
+    padding: var(--vPadding) 0;
+    margin: 0 auto;
+    mask-image: linear-gradient(
+      to bottom,
+      #0000,
+      #000 var(--vPadding),
+      #000 calc(100% - var(--vPadding)),
+      #0000);
+  }
+
+  @keyframes translateY {
+    from {
+      opacity: 0;
+      transform: translateY(50%);
+      line-height: 2;
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      line-height: 1.25;
+    }
+  }
+}
