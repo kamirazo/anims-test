@@ -33,7 +33,7 @@ const Hero = ({ title, mainPoints }: HeroProps) => {
     <div className="hero">
       <header className="hero__header section" ref={heroHeaderRef}>
         <video autoPlay loop className="hero__header__background">
-          <source src="https://a.storyblok.com/f/172651/x/4f4d52f469/nissannismo_ariya_2022-11-14.mp4" type="video/mp4" />
+          <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm" />
         </video>
 
         <h1 style={{ '--hero-header-scroll-progress': heroHeaderScrollProgress } as CSSProperties} className='hero__header__title'>

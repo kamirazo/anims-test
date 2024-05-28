@@ -20,7 +20,7 @@ const ScaleBgSection = ({
   
   return (
     <motion.section ref={scaleBgSectionRef} style={{ '--scale-bg-section-scroll-progress': (scrollYProgress) } as CSSProperties} className="scale-bg-section section">
-      <Image src="/img/testAnimImg.png" fill alt="" className="scale-bg-section__bg-image" />
+      <Image src="/img/testAnimImg.jpg" fill alt="" className="scale-bg-section__bg-image" />
       {children}
     </motion.section>
   )

@@ -18,6 +18,7 @@ export default function VideoOnScrollSection({
   const videoOnScrollWrapper = useRef<HTMLElement | null>(null)
   const videoElement = useRef<HTMLVideoElement | null>(null)
   const [scrollHeight, setScrollHeight] = useState<number>(0)
+  const [contentVisibility, setContentVisibility] = useState<boolean>(true)
   
   const { scrollYProgress } = useScroll({
     target: videoOnScrollWrapper,
@@ -25,6 +26,12 @@ export default function VideoOnScrollSection({
   });
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest < .5) {
+      setContentVisibility(true)
+    } else {
+      setContentVisibility(false)
+    }
+
     if (!videoElement.current?.duration || window.scrollY === 0) return
 
     videoElement.current.currentTime = latest * videoElement.current?.duration
@@ -56,7 +63,7 @@ export default function VideoOnScrollSection({
           <source src={videoURL} type="video/mp4" />
         </video>
 
-        <div className="video-on-scroll__content">
+        <div className={`video-on-scroll__content ${!contentVisibility ? 'video-on-scroll__content--fade-out' : ''}`}>
           {Children.map(children, (child, index) => (
             <Fragment key={index}>
               {child}

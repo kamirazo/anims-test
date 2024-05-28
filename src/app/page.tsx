@@ -45,7 +45,7 @@ export default function Home() {
           <section className="section">
             Hor Section 2
             <AnimatedGrid displayType='thirds'>
-              <Card image={{url:'/img/testAnimImg.png'}} title="Card title" content={basicParagraph()} inDarkContext />
+              <Card image={{url:'/img/testAnimImg.jpg'}} title="Card title" content={basicParagraph()} inDarkContext />
               <Card title="Card title" content={basicParagraph()} inDarkContext />
               <Card title="Card title" content={basicParagraph()} inDarkContext />
             </AnimatedGrid>
@@ -53,7 +53,7 @@ export default function Home() {
           <section className="section">Hor Section 3</section>
           <section className="section">Hor Section 4</section>
         </HorizontalScroller>
-        <ImgTextSection image={{url:'/img/testAnimImg.png'}} title="Card title" content={basicParagraph()} />
+        <ImgTextSection image={{url:'/img/testAnimImg.jpg'}} title="Card title" content={basicParagraph()} />
         <StackedSections>
           <section className="section">Stacked Section 1</section>
           <section className="section">Stacked Section 2</section>
@@ -62,7 +62,7 @@ export default function Home() {
         </StackedSections>
         <div className="section">
           <AnimatedGrid displayType='thirds'>
-            <Card image={{url:'/img/testAnimImg.png'}} title="Card title" content={basicParagraph()} />
+            <Card image={{url:'/img/testAnimImg.jpg'}} title="Card title" content={basicParagraph()} />
             <Card title="Card title" content={basicParagraph()} />
             <Card title="Card title" content={basicParagraph()} />
           </AnimatedGrid>

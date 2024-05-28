@@ -14,8 +14,15 @@
     #0000);
 
   &-wrapper {
+    transition: transform 1s ease-in-out;
+    
     .section-title--translateY & {
       animation: 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards translateY;
+    }
+
+    .video-on-scroll__content--fade-out & {
+      animation: none;
+      transform: translateY(-150%);
     }
   }
 
@@ -42,7 +49,7 @@
       background: linear-gradient(90deg, transparent, #fff, transparent);
       background-repeat: no-repeat;
       background-size: 80%;
-      animation: glowing-2 3s linear infinite;
+      animation: glowing-2 4s linear infinite;
       -webkit-background-clip: text;
       -webkit-text-fill-color: rgba(255, 255, 255, 0);
     }
