@@ -7,7 +7,7 @@ interface SectionTitleProps {
   titleContent: string
   subtitleTag?: keyof HTMLElementTagNameMap
   subtitleContent?: string
-  animType?: 'torchlight' | 'glow' | 'translateY'
+  animType?: 'glowing' | 'translateY'
 }
 
 const SectionTitle = ({
@@ -18,7 +18,7 @@ const SectionTitle = ({
   animType
 }: SectionTitleProps) => (
   <div className={`section-title ${animType ? `section-title--${animType}` : ''}`}>
-    <div className={`section-title-wrapper ${animType ? `section-title-wrapper--${animType}` : ''}`}>
+    <div className="section-title-wrapper">
       {createElement(
         titleTag, 
         { className : 'section-title__main-title' },

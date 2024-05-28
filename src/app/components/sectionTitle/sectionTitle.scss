@@ -1,10 +1,20 @@
 .section-title {
   --mainTitleSize: clamp(2.5rem, 6vw, 4.75rem);
-  
+  --vPadding: var(--mainTitleSize);
+
+  width: 50%;
+  padding: var(--vPadding) 0;
+  margin: 0 auto;
   text-align: center;
+  mask-image: linear-gradient(
+    to bottom,
+    #0000,
+    #000 var(--vPadding),
+    #000 calc(100% - var(--vPadding)),
+    #0000);
 
   &-wrapper {
-    &--translateY {
+    .section-title--translateY & {
       animation: 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards translateY;
     }
   }
@@ -14,34 +24,58 @@
     margin: 0;
     font-size: clamp(2.5rem, 6vw, 4.75rem);
     text-transform: uppercase;
-    color: white;
-  }
+    line-height: 1.2;
 
-  &--translateY {
-    --vPadding: var(--mainTitleSize);
-
-    width: 50%;
-    padding: var(--vPadding) 0;
-    margin: 0 auto;
-    mask-image: linear-gradient(
-      to bottom,
-      #0000,
-      #000 var(--vPadding),
-      #000 calc(100% - var(--vPadding)),
-      #0000);
+    .section-title--glowing & {
+      // background: linear-gradient(
+      //   to right,
+      //   #fff,
+      //   #fff5 .5em,
+      //   #fff5 1.5em,
+      //   #fff 2em,
+      //   #fff);
+      // background-size: 200% 100%;
+      // background-position-x: 10%;
+      // -webkit-background-clip: text;
+      // -webkit-text-fill-color: transparent;
+      // animation: 3.2s cubic-bezier(0.25, 1, 0.5, 1) .5s forwards glowing;
+      background: linear-gradient(90deg, transparent, #fff, transparent);
+      background-repeat: no-repeat;
+      background-size: 80%;
+      animation: glowing-2 3s linear infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: rgba(255, 255, 255, 0);
+    }
   }
 
   @keyframes translateY {
     from {
       opacity: 0;
       transform: translateY(50%);
-      line-height: 2;
     }
 
     to {
       opacity: 1;
       transform: translateY(0);
-      line-height: 1.25;
+    }
+  }
+
+  @keyframes glowing {
+    from {
+      background-position-x: 10%;
+    }
+
+    to {
+      background-position-x: -110%;
+    }
+  }
+
+  @keyframes glowing-2 {
+    0% {
+      background-position-x: -500%;
+    }
+    100% {
+      background-position-x: 500%;
     }
   }
 }
