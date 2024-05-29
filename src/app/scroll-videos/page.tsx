@@ -16,13 +16,28 @@ export default function Home() {
             subtitleContent='Subtitle' />
         </div>
       </VideoOnScrollSection>
-      <VideoOnScrollSection videoURL="/video/test.mp4">
-        <h2>Main title 2</h2>
-        <ul>
-          <li>Side text 1. Nobis minus aut sint eum.</li>
-          <li>Side text 2. Nobis minus aut sint eum.</li>
-          <li>Side text 3. Nobis minus aut sint eum.</li>
-        </ul>
+      <VideoOnScrollSection 
+        videoURL="/video/test.mp4"
+        timestamps={[
+          {start: 0, duration: .1},
+          {start: .2, duration: .2},
+          {start: .7, duration: .2}
+        ]}>
+        <div className="timeline__item center-x center-y">
+          <h2>Main title 2</h2>
+        </div>
+
+        <div className="timeline__item end-x center-y">
+          <ul>
+            <li>Side text 1. Nobis minus aut sint eum.</li>
+            <li>Side text 2. Nobis minus aut sint eum.</li>
+            <li>Side text 3. Nobis minus aut sint eum.</li>
+          </ul>
+        </div>
+
+        <div className="timeline__item center-x end-y">
+          <p>Centered text. Nobis minus aut sint eum.</p>
+        </div>
       </VideoOnScrollSection>
     </main>
   )

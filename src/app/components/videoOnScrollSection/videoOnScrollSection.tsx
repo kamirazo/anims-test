@@ -1,24 +1,34 @@
 'use client'
 
 import { ReactNode, useRef, useState, Children, CSSProperties, useEffect, Fragment } from 'react'
-import { useMotionValueEvent, useScroll } from 'framer-motion'
+import { useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion'
 
 import './videoOnScrollSection.scss'
 
+const timelineItemStatus = (currentScroll: number, scrollStart?: number, scrollDuration?: number) => {
+  if (scrollStart === undefined || scrollDuration === undefined || currentScroll < scrollStart) return ''
+
+  if (currentScroll > scrollStart + scrollDuration) return 'passed'
+
+  if (currentScroll > scrollStart) return 'displayed'
+}
 
 export default function VideoOnScrollSection({
   videoURL,
   children,
-  playbackSpeed = 500
+  playbackSpeed = 500,
+  timestamps
 }: {
-  videoURL: string,
+  videoURL: string
   children: ReactNode
   playbackSpeed?: number
+  timestamps?: {start: number, duration: number}[]
 }) {
   const videoOnScrollWrapper = useRef<HTMLElement | null>(null)
   const videoElement = useRef<HTMLVideoElement | null>(null)
   const [scrollHeight, setScrollHeight] = useState<number>(0)
   const [contentVisibility, setContentVisibility] = useState<boolean>(true)
+  const [scrollTimeline, setScrollTimeline] = useState<number>(0)
   
   const { scrollYProgress } = useScroll({
     target: videoOnScrollWrapper,
@@ -26,6 +36,8 @@ export default function VideoOnScrollSection({
   });
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    setScrollTimeline(latest)
+
     if (latest < .5) {
       setContentVisibility(true)
     } else {
@@ -62,13 +74,24 @@ export default function VideoOnScrollSection({
           ref={videoElement}>
           <source src={videoURL} type="video/mp4" />
         </video>
-
+        
         <div className={`video-on-scroll__content ${!contentVisibility ? 'video-on-scroll__content--fade-out' : ''}`}>
-          {Children.map(children, (child, index) => (
-            <Fragment key={index}>
-              {child}
-            </Fragment>
-          ))}
+          <div className="timeline">
+            {Children.map(children, (child, index) => (
+              <div key={index}
+                className={timelineItemStatus(
+                  scrollTimeline,
+                  timestamps?.[index]?.start,
+                  timestamps?.[index]?.duration)}
+                style={{
+                  '--scrollValue': scrollTimeline,
+                  '--start': timestamps?.[index]?.start,
+                  '--duration': timestamps?.[index]?.duration
+                } as CSSProperties}>
+                {child}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
