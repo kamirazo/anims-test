@@ -16,7 +16,8 @@ export default function Home() {
             subtitleContent='Subtitle' />
         </div>
       </VideoOnScrollSection>
-      <VideoOnScrollSection 
+      {/* TODO : Uncomment after adding a test video under /public/video/test.mp4 */}
+      {/* <VideoOnScrollSection 
         videoURL="/video/test.mp4"
         timestamps={[
           {start: 0, duration: .1},
@@ -38,7 +39,7 @@ export default function Home() {
         <div className="timeline__item center-x end-y">
           <p>Centered text. Nobis minus aut sint eum.</p>
         </div>
-      </VideoOnScrollSection>
+      </VideoOnScrollSection> */}
     </main>
   )
 }
