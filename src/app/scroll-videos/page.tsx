@@ -20,13 +20,14 @@ export default function Home() {
               titleTag: 'h1'
             },
             settings: {
-              animType: 'glowing'
+              animType: 'glowing',
+              fixed: false
             }
           }
         ]} />
 
       {/* TODO : Uncomment after adding a test video under /public/video/test.mp4 */}
-      {/* <VideoOnScrollSection 
+      <VideoOnScrollSection 
         videoURL="/video/test.mp4"
         content={[
           {
@@ -35,7 +36,8 @@ export default function Home() {
               start: 0,
               duration: .1,
               posX: 'center-x',
-              posY: 'center-y'
+              posY: 'center-y',
+              fixed: true
             }
           },
           {
@@ -51,7 +53,8 @@ export default function Home() {
               start: .2,
               duration: .2,
               posX: 'end-x',
-              posY: 'center-y'
+              posY: 'center-y',
+              fixed: true
             }
           },
           {
@@ -60,11 +63,12 @@ export default function Home() {
               start: .7,
               duration: .2,
               posX: 'center-x',
-              posY: 'end-y'
+              posY: 'end-y',
+              fixed: true
             }
           }
         ]}
-      /> */}
+      />
     </main>
   )
 }

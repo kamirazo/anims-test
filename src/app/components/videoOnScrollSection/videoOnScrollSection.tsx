@@ -13,6 +13,7 @@ type SubComponentSettings = {
   posY?: string
   start?: number
   duration?: number
+  fixed: boolean
 }
 
 type AnimatedListSubComponent = {
@@ -35,7 +36,21 @@ type VideoOnScrollContent = {
 interface VideoOnScrollSectionProps {
   videoURL: string
   playbackSpeed?: number
-  content: VideoOnScrollContent[]
+  content?: VideoOnScrollContent[]
+}
+
+const timelineClass = (isFixed: boolean, isItem: boolean) => {
+  let classname = 'timeline'
+
+  if (isFixed) {
+    classname = `fixed-${classname}`
+  }
+
+  if (isItem) {
+    classname = `${classname}__item`
+  }
+
+  return classname
 }
 
 const timelineItemStatus = (
@@ -52,7 +67,7 @@ const timelineItemStatus = (
 const returnContentComponent = (componentContent: VideoOnScrollContent) => {
   if (typeof componentContent.content === 'string') {
     return (
-      <div className={`timeline__item ${componentContent.settings?.posX} ${componentContent.settings?.posY}`}>
+      <div className={`${timelineClass(true, componentContent.settings?.fixed ?? false)} ${componentContent.settings?.posX} ${componentContent.settings?.posY}`}>
         <div>{componentContent.content}</div>
       </div>
     )
@@ -69,14 +84,14 @@ const returnContentComponent = (componentContent: VideoOnScrollContent) => {
       )
     case 'AnimatedList':
       return (
-        <div className={`timeline__item ${componentContent.settings?.posX} ${componentContent.settings?.posY}`}>
+        <div className={`${timelineClass(true, componentContent.settings?.fixed ?? false)} ${componentContent.settings?.posX} ${componentContent.settings?.posY}`}>
           <AnimatedList 
             listItems={componentContent.content.listItems ?? []} />
         </div>
       )
     default:
       return (
-        <div className={`timeline__item ${componentContent.settings?.posX} ${componentContent.settings?.posY}`}>
+        <div className={`${timelineClass(true, componentContent.settings?.fixed ?? false)} ${componentContent.settings?.posX} ${componentContent.settings?.posY}`}>
           <div>{componentContent.content}</div>
         </div>
       )
@@ -139,25 +154,27 @@ const VideoOnScrollSection = ({
           <source src={videoURL} type="video/mp4" />
         </video>
         
-        <div className={`video-on-scroll__content ${!contentVisibility ? 'video-on-scroll__content--fade-out' : ''}`}>
-          <div className="timeline">
-            {content.map((currentContent, index) => (
-              <div key={index}
-                className={timelineItemStatus(
-                  scrollTimeline,
-                  currentContent.settings?.start,
-                  currentContent.settings?.duration)}
-                style={{
-                  '--scrollValue': scrollTimeline,
-                  '--start': currentContent.settings?.start,
-                  '--duration': currentContent.settings?.duration
-                } as CSSProperties}>
-                
-                { returnContentComponent(currentContent) }
-              </div>
-            ))}
+        {content && (
+          <div className={`video-on-scroll__content ${!contentVisibility ? 'video-on-scroll__content--fade-out' : ''}`}>
+            <div className={timelineClass(true, false)}>
+              {content.map((currentContent, index) => (
+                <div key={index}
+                  className={timelineItemStatus(
+                    scrollTimeline,
+                    currentContent.settings?.start,
+                    currentContent.settings?.duration)}
+                  style={{
+                    '--scrollValue': scrollTimeline,
+                    '--start': currentContent.settings?.start,
+                    '--duration': currentContent.settings?.duration
+                  } as CSSProperties}>
+                  
+                  { returnContentComponent(currentContent) }
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   )

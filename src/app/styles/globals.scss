@@ -67,7 +67,7 @@ body {
   }
 }
 
-.timeline {
+.fixed-timeline {
   color: white;
   
   &__item {
@@ -94,7 +94,6 @@ body {
         transform: translateY(calc(-100% - 2em));
       }
     }
-
   }
 
   .center-x {
