@@ -7,8 +7,8 @@ export default function ScrollVideoOnly() {
 
   return (
     <main>
-      <VideoOnScrollSection videoURL="/video/test2.mp4" playbackSpeed={200}/>
-      {/* <VideoOnScrollSection videoURL="/video/test3.mp4"/> */}
+      {/* TODO : Uncomment after adding a test video under /public/video/test2.mp4 */}
+      {/* <VideoOnScrollSection videoURL="/video/test2.mp4" playbackSpeed={200}/> */}
       <GallerySequence />
     </main>
   )

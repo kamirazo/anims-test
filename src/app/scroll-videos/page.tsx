@@ -27,7 +27,7 @@ export default function Home() {
         ]} />
 
       {/* TODO : Uncomment after adding a test video under /public/video/test.mp4 */}
-      <VideoOnScrollSection 
+      {/* <VideoOnScrollSection 
         videoURL="/video/test.mp4"
         content={[
           {
@@ -68,7 +68,7 @@ export default function Home() {
             }
           }
         ]}
-      />
+      /> */}
     </main>
   )
 }
