@@ -1,11 +1,47 @@
 'use client'
 
-import { ReactNode, useRef, useState, Children, CSSProperties, useEffect, Fragment } from 'react'
-import { useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion'
+import { useRef, useState, CSSProperties, useEffect } from 'react'
+import { useMotionValueEvent, useScroll } from 'framer-motion'
 
 import './videoOnScrollSection.scss'
+import SectionTitle from '../sectionTitle/sectionTitle'
+import AnimatedList from '../animatedList/AnimatedList'
 
-const timelineItemStatus = (currentScroll: number, scrollStart?: number, scrollDuration?: number) => {
+type SubComponentSettings = {
+  animType?: 'glowing' | 'translateY'
+  posX?: string
+  posY?: string
+  start?: number
+  duration?: number
+}
+
+type AnimatedListSubComponent = {
+  componentID: 'AnimatedList',
+  listItems: string[]
+}
+
+type SectionTitleSubComponent = {
+  componentID: 'SectionTitle',
+  titleContent: string,
+  subtitle?: string,
+  titleTag?: keyof HTMLElementTagNameMap
+}
+
+type VideoOnScrollContent = {
+  content: string | AnimatedListSubComponent | SectionTitleSubComponent,
+  settings?: SubComponentSettings
+}
+
+interface VideoOnScrollSectionProps {
+  videoURL: string
+  playbackSpeed?: number
+  content: VideoOnScrollContent[]
+}
+
+const timelineItemStatus = (
+  currentScroll: number,
+  scrollStart?: number,
+  scrollDuration?: number) => {
   if (scrollStart === undefined || scrollDuration === undefined || currentScroll < scrollStart) return ''
 
   if (currentScroll > scrollStart + scrollDuration) return 'passed'
@@ -13,17 +49,45 @@ const timelineItemStatus = (currentScroll: number, scrollStart?: number, scrollD
   if (currentScroll > scrollStart) return 'displayed'
 }
 
-export default function VideoOnScrollSection({
+const returnContentComponent = (componentContent: VideoOnScrollContent) => {
+  if (typeof componentContent.content === 'string') {
+    return (
+      <div className={`timeline__item ${componentContent.settings?.posX} ${componentContent.settings?.posY}`}>
+        <div>{componentContent.content}</div>
+      </div>
+    )
+  }
+
+  switch (componentContent.content.componentID) {
+    case 'SectionTitle':
+      return (
+        <SectionTitle 
+          titleTag={componentContent.content.titleTag} 
+          titleContent={componentContent.content.titleContent ?? ''} 
+          animType={componentContent.settings?.animType} 
+          subtitleContent={componentContent.content.subtitle ?? ''}  />
+      )
+    case 'AnimatedList':
+      return (
+        <div className={`timeline__item ${componentContent.settings?.posX} ${componentContent.settings?.posY}`}>
+          <AnimatedList 
+            listItems={componentContent.content.listItems ?? []} />
+        </div>
+      )
+    default:
+      return (
+        <div className={`timeline__item ${componentContent.settings?.posX} ${componentContent.settings?.posY}`}>
+          <div>{componentContent.content}</div>
+        </div>
+      )
+  }
+}
+
+const VideoOnScrollSection = ({
   videoURL,
-  children,
   playbackSpeed = 500,
-  timestamps
-}: {
-  videoURL: string
-  children: ReactNode
-  playbackSpeed?: number
-  timestamps?: {start: number, duration: number}[]
-}) {
+  content
+}: VideoOnScrollSectionProps) => {
   const videoOnScrollWrapper = useRef<HTMLElement | null>(null)
   const videoElement = useRef<HTMLVideoElement | null>(null)
   const [scrollHeight, setScrollHeight] = useState<number>(0)
@@ -32,7 +96,7 @@ export default function VideoOnScrollSection({
   
   const { scrollYProgress } = useScroll({
     target: videoOnScrollWrapper,
-    offset: ["start center", "end"]
+    offset: ["start", "end"]
   });
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -77,18 +141,19 @@ export default function VideoOnScrollSection({
         
         <div className={`video-on-scroll__content ${!contentVisibility ? 'video-on-scroll__content--fade-out' : ''}`}>
           <div className="timeline">
-            {Children.map(children, (child, index) => (
+            {content.map((currentContent, index) => (
               <div key={index}
                 className={timelineItemStatus(
                   scrollTimeline,
-                  timestamps?.[index]?.start,
-                  timestamps?.[index]?.duration)}
+                  currentContent.settings?.start,
+                  currentContent.settings?.duration)}
                 style={{
                   '--scrollValue': scrollTimeline,
-                  '--start': timestamps?.[index]?.start,
-                  '--duration': timestamps?.[index]?.duration
+                  '--start': currentContent.settings?.start,
+                  '--duration': currentContent.settings?.duration
                 } as CSSProperties}>
-                {child}
+                
+                { returnContentComponent(currentContent) }
               </div>
             ))}
           </div>
@@ -97,3 +162,5 @@ export default function VideoOnScrollSection({
     </section>
   )
 }
+
+export default VideoOnScrollSection
