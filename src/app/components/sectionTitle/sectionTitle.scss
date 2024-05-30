@@ -34,24 +34,18 @@
     line-height: 1.2;
 
     .section-title--glowing & {
-      // background: linear-gradient(
-      //   to right,
-      //   #fff,
-      //   #fff5 .5em,
-      //   #fff5 1.5em,
-      //   #fff 2em,
-      //   #fff);
-      // background-size: 200% 100%;
-      // background-position-x: 10%;
-      // -webkit-background-clip: text;
-      // -webkit-text-fill-color: transparent;
-      // animation: 3.2s cubic-bezier(0.25, 1, 0.5, 1) .5s forwards glowing;
-      background: linear-gradient(90deg, transparent, #fff, transparent);
-      background-repeat: no-repeat;
-      background-size: 80%;
-      animation: glowing-2 4s linear infinite;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: rgba(255, 255, 255, 0);
+      background: linear-gradient(
+        to right,
+        #fff,
+        #fff8 1em,
+        #fff8 2em,
+        #fff 3em,
+        #fff);
+      background-size: 200% 100%;
+      background-position-x: 20%;
+      animation: 5s cubic-bezier(0.5, 1, 0.89, 1) 2s infinite glowing;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   }
 
@@ -69,20 +63,11 @@
 
   @keyframes glowing {
     from {
-      background-position-x: 10%;
+      background-position-x: 20%;
     }
 
     to {
-      background-position-x: -110%;
-    }
-  }
-
-  @keyframes glowing-2 {
-    0% {
-      background-position-x: -500%;
-    }
-    100% {
-      background-position-x: 500%;
+      background-position-x: -120%;
     }
   }
 }
