@@ -1,5 +1,5 @@
 .gallery-sequence {
-  height: 400vh;
+  height: var(--scrollable-height);
 
   &-wrapper {
     position: sticky;

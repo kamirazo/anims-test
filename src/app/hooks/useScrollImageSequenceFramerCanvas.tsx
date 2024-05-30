@@ -7,8 +7,8 @@ import {
 import { useCallback, useEffect, useRef } from 'react';
 
 export interface UseScrollImageSequenceFramerCanvasProps {
-  onDraw: (img: HTMLImageElement, ctx: CanvasRenderingContext2D) => void;
-  keyframes: HTMLImageElement[];
+  onDraw: (img: HTMLImageElement | undefined, ctx: CanvasRenderingContext2D) => void;
+  keyframes: (HTMLImageElement | undefined)[];
   scrollOptions?: Parameters<typeof useScroll>[0];
   springConfig?: SpringOptions;
 }
@@ -44,7 +44,7 @@ const useScrollImageSequenceFramerCanvas = ({
         canvasRef.current!.getContext('2d')!,
       );
     },
-    [keyframes],
+    [keyframes, onDraw],
   );
 
   useEffect(() => {
@@ -60,10 +60,12 @@ const useScrollImageSequenceFramerCanvas = ({
   }, [progress, renderImage, resizeCanvas]);
 
   useEffect(() => {
-    keyframes[0].onload = () => {
-      onDraw(keyframes[0], canvasRef.current!.getContext('2d')!);
-    };
-  }, [keyframes]);
+    if (keyframes?.[0]) {
+      keyframes[0].onload = () => {
+        onDraw(keyframes[0], canvasRef.current!.getContext('2d')!);
+      };
+    }
+  }, [keyframes, onDraw]);
 
   useMotionValueEvent(progress, 'change', renderImage);
 
