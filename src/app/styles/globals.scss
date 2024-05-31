@@ -142,3 +142,51 @@ body {
     list-style-type: none;
   }
 }
+
+.timeline {
+  height: var(--scrollable-height);
+  transform: translateY(calc(-100% * var(--scrollValue)));
+  color: white;
+
+  &__mask {
+    position: fixed;
+    width: 100%;
+    height: var(--maskHeight);
+    top: var(--maskTop);
+    left: 0;
+    mask-image: linear-gradient(
+      to bottom,
+      #0000 10%,
+      #000 25%,
+      #000 75%,
+      #0000 90%);
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    // height: calc(100% * var(--duration));
+    position: absolute;
+    top: calc(100% * var(--start));
+    left: 0;
+
+    &.center-x {
+      align-items: center;
+    }
+
+    &.end-x {
+      align-items: flex-end;
+    }
+
+    &.end-y {
+      justify-content: flex-end;
+    }
+  }
+
+  ul, p, h1, h2 {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+}
