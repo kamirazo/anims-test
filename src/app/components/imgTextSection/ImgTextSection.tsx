@@ -45,7 +45,7 @@ const ImgTextSection = ({
         )}
 
         {image?.url && (
-          <Image src={image.url}
+          <img src={image.url}
             width={1920}
             height={1080}
             alt={image.alt ?? ''}

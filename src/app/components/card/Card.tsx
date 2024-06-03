@@ -18,7 +18,7 @@ const Card = ({image, title, content, inDarkContext}: CardProps) => {
     <div className={`card ${inDarkContext ? 'card--dark' : ''}`}>
       {image?.url && (
         <div className="card__image-wrapper">
-          <Image src={image.url} fill alt={image.alt ?? ''} className="card__image" />
+          <img src={image.url} alt={image.alt ?? ''} className="card__image" />
         </div>
       )}
       <div className="card__content">

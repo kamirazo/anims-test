@@ -1,7 +1,6 @@
 'use client'
 
 import {CSSProperties, ReactNode, useRef } from 'react'
-import Image from "next/image"
 import { motion, useScroll } from 'framer-motion'
 
 import './ScaleBgSection.scss'
@@ -20,7 +19,9 @@ const ScaleBgSection = ({
   
   return (
     <motion.section ref={scaleBgSectionRef} style={{ '--scale-bg-section-scroll-progress': (scrollYProgress) } as CSSProperties} className="scale-bg-section section">
-      <Image src="/img/testAnimImg.jpg" fill alt="" className="scale-bg-section__bg-image" />
+      <div className="scale-bg-section__bg-image-wrapper">
+        <img src="/img/testAnimImg.jpg" alt="" className="scale-bg-section__bg-image" />
+      </div>
       {children}
     </motion.section>
   )

@@ -4,13 +4,18 @@
   overflow: hidden;
 
   &__bg-image {
+    width: 100%;
     object-fit: cover;
     object-position: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
     filter: brightness(min(var(--scale-bg-section-scroll-progress) + .33, 1));
     transform: scale(calc(1 + var(--scale-bg-section-scroll-progress) * .33));
+
+    &-wrapper {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
   }
 }

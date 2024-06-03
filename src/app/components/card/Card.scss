@@ -13,6 +13,9 @@
   color: var(--text-color);
   
   &__image {
+    width: 100%;
+    object-fit: cover;
+    
     &-wrapper {
       width: 100%;
       aspect-ratio: 16/9;
