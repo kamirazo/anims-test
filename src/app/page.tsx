@@ -2,6 +2,7 @@
 
 import GallerySequence from './components/gallerySequence/gallerySequence';
 import VideoOnScrollSection from './components/videoOnScrollSection/videoOnScrollSection';
+import VideosSequence from './components/videosSequence/videosSequence';
 
 export default function ScrollVideoOnly() {
 
@@ -9,7 +10,7 @@ export default function ScrollVideoOnly() {
     <main>
       {/* TODO : Uncomment after adding a test video under /public/video/test2.mp4 */}
       {/* <VideoOnScrollSection videoURL="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" playbackSpeed={200}/> */}
-      <GallerySequence 
+      {/* <GallerySequence 
         content={[
           {
             content: {
@@ -52,7 +53,9 @@ export default function ScrollVideoOnly() {
             }
           }
         ]}
-      />
+      /> */}
+
+      <VideosSequence />
     </main>
   )
 }
