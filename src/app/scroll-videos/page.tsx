@@ -1,8 +1,6 @@
 'use client'
 
-import AnimatedList from '../components/animatedList/AnimatedList';
-import SectionTitle from '../components/sectionTitle/sectionTitle';
-import VideoOnScrollSection from '../components/videoOnScrollSection/videoOnScrollSection';
+import VideoOnScrollSection from '../components/videoOnScrollSection/videoOnScrollSection'
 
 export default function Home() {
 
