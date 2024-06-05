@@ -121,21 +121,22 @@ const handleDrawCanvas = (
   );
 };
 
-const imgSequenceLength = 215
+const imgSequenceLength = 100
 
-const GallerySequence = ({content}: {
+const GallerySequence = ({imgSequencePath, content}: {
+  imgSequencePath: string
   content?: VideoOnScrollContent[]
 }) => {
   const keyframes = useMemo(
     () =>
       [...new Array(imgSequenceLength)].map((_, i) =>
         createImage(
-          `https://www.apple.com/105/media/us/airpods-3rd-generation/2021/3c0b27aa-a5fe-4365-a9ae-83c28d10fa21/anim/spatial-audio/large/${i
+          `/img/${imgSequencePath}_${i
             .toString()
             .padStart(4, '0')}.jpg`,
         ),
       ),
-    [],
+    [imgSequencePath],
   );
 
   const containerRef = useRef<HTMLElement>(null);
@@ -196,30 +197,28 @@ const GallerySequence = ({content}: {
       </div>
 
       {content && (
-        <div className="gallery-sequence__content">
-          <motion.div className="timeline__mask" style={{
-            '--scrollValue': progress,
-            '--maskTop': maskTop,
-            '--maskHeight': maskComputedHeights
-            } as CSSProperties}>
-            <div className={timelineClass(false, false)}>
-              {content.map((currentContent, index) => (
-                <motion.div key={index}
-                  className={`timeline__item ${currentContent.settings?.posX}-x ${currentContent.settings?.posY}-y`}
-                  // className={timelineItemStatus(
-                  //   progress,
-                  //   currentContent.settings?.start,
-                  //   currentContent.settings?.duration)}
-                  style={{
-                    '--start': currentContent.settings?.start,
-                    '--duration': currentContent.settings?.duration
-                  } as CSSProperties}>
-                  
-                  { returnContentComponent(currentContent) }
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+        // <div className="gallery-sequence__content">
+        //   <motion.div className="timeline__mask" style={{
+        //     '--scrollValue': progress,
+        //     '--maskTop': maskTop,
+        //     '--maskHeight': maskComputedHeights
+        //     } as CSSProperties}>
+        //   </motion.div>
+        // </div>
+        <div className={timelineClass(false, false)}>
+          {content.map((currentContent, index) => (
+            <motion.div key={index}
+              className={`timeline__item ${currentContent.settings?.posX}-x ${currentContent.settings?.posY}-y`}
+              style={{
+                '--scrollValue': progress,
+                '--start': currentContent.settings?.start,
+                '--duration': currentContent.settings?.duration,
+                '--end': currentContent.settings?.start + currentContent.settings?.duration
+              } as CSSProperties}>
+              
+              { returnContentComponent(currentContent) }
+            </motion.div>
+          ))}
         </div>
       )}
     </section>

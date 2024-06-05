@@ -20,6 +20,8 @@
 .DS_Store
 *.pem
 /public/video
+/public/img/sequenceTest
+/public/img/sequenceTest2
 
 # debug
 npm-debug.log*

@@ -24,9 +24,9 @@ export default function Home() {
           }
         ]} />
 
-      {/* TODO : Uncomment after adding a test video under /public/video/test.mp4 */}
+      {/* TODO : Uncomment after adding a test video under /public/video/test2.mp4 */}
       {/* <VideoOnScrollSection 
-        videoURL="/video/test.mp4"
+        videoURL="/video/test2.mp4"
         content={[
           {
             content: 'Second section',

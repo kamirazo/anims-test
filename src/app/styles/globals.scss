@@ -144,8 +144,10 @@ body {
 }
 
 .timeline {
+  width: 100%;
   height: var(--scrollable-height);
-  transform: translateY(calc(-100% * var(--scrollValue)));
+  position: absolute;
+  top: 0;
   color: white;
 
   &__mask {
@@ -166,10 +168,19 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    // height: calc(100% * var(--duration));
-    position: absolute;
-    top: calc(100% * var(--start));
+    position: sticky;
+    margin-top: calc(var(--scrollable-height) * var(--start));
     left: 0;
+    // background-color: rgba(255,120,210,.4);
+    mask-image: linear-gradient(
+      to bottom,
+      #0000,
+      #000 1rem,
+      #000 (calc(100% - 1rem)),
+      #0000);
+    mask-size: auto 200%;
+    mask-position-y: calc(50% - ((var(--scrollValue) - var(--start)) * 1000%));
+    mask-repeat: no-repeat;
 
     &.center-x {
       align-items: center;
@@ -179,8 +190,18 @@ body {
       align-items: flex-end;
     }
 
+    &.start-y {
+      top: 0;
+    }
+
+    &.center-y {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
     &.end-y {
       justify-content: flex-end;
+      top: 75%;
     }
   }
 
