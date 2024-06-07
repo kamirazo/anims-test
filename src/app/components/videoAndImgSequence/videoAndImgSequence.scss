@@ -36,15 +36,14 @@
 
     &__item {
       padding: 1em 0;
-      transform: translateY(var(--translateY));
+      transform: translateY(var(--itemTranslateY));
 
       &-wrapper {
         width: 100%;
         position: sticky;
-        top: 50%;
+        top: var(--wrapperTop);
         left: 0;
-        margin-top: 50%;
-        font-size: 2rem;
+        overflow: hidden;
         mask-image: linear-gradient(
           to bottom,
           #0000,

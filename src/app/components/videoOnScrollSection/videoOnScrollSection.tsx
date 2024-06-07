@@ -150,6 +150,7 @@ const VideoOnScrollSection = ({
       style={{'--scrollableHeight': `${scrollHeight}px`} as CSSProperties}>
       <div className="video-on-scroll-wrapper">
         <video className="video-on-scroll__video"
+          muted
           ref={videoElement}>
           <source src={videoURL} type="video/mp4" />
         </video>
