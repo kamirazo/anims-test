@@ -18,10 +18,14 @@ const AudioVisualizer = () => {
   const audioCtx = useRef<AudioContext | null>(null)
   const canvasElement = useRef<HTMLCanvasElement | null>(null)
   const canvasCtx = useRef<CanvasRenderingContext2D | null>(null)
+  const audio = useRef<HTMLAudioElement | null>(null)
   const [graphRatio, setGraphRatio] = useState<number>(0)
 
   useEffect(() => {
     audioCtx.current = new AudioContext()
+    audio.current = new Audio()
+    audio.current.src = '/audio/thank-for-watching-this-video-voice.mp3'
+    audio.current.load()
   }, [])
 
   useEffect(() => {
@@ -38,7 +42,9 @@ const AudioVisualizer = () => {
   const visualizerAnimation = (
     bufferLength: number,
     analyser: AnalyserNode,
-    dataArray: Uint8Array
+    dataArray: Uint8Array,
+    timestamp: number,
+    audioDuration: number
   ) => {
     if (!canvasCtx.current || !canvasElement.current) return
 
@@ -68,28 +74,28 @@ const AudioVisualizer = () => {
       secondX += barWidth
     }
 
-    requestAnimationFrame(() => visualizerAnimation(bufferLength, analyser, dataArray))
+    if (Date.now() <= timestamp + audioDuration * 1000 + 500) {
+      requestAnimationFrame(() => visualizerAnimation(bufferLength, analyser, dataArray, timestamp, audioDuration))
+    }
   }
 
   const playSound = async () => {
-    if (!audioCtx.current) return
-
-    // Preload and store audio in context outside component ?
-    const audio = new Audio()
-    audio.src = '/audio/thank-for-watching-this-video-voice.mp3'
+    if (!audioCtx.current || !audio.current) return
 
     const analyser = audioCtx.current.createAnalyser()
     analyser.connect(audioCtx.current.destination)
     analyser.fftSize = 1024
     
-    const audioSource = audioCtx.current.createMediaElementSource(audio)
+    const audioSource = audioCtx.current.createMediaElementSource(audio.current)
     audioSource.connect(analyser)
     
     const bufferLength = analyser.frequencyBinCount
     const dataArray = new Uint8Array(bufferLength)
-    audio.play()
 
-    visualizerAnimation(bufferLength, analyser, dataArray)
+    if (audio.current.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      audio.current.play()
+      visualizerAnimation(bufferLength, analyser, dataArray, Date.now(), audio.current.duration)
+    }
   }
 
   return (
