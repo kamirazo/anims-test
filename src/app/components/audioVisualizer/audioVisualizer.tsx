@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import './audioVisualizer.scss'
 
 // https://www.youtube.com/watch?v=3NgVlAscdcA&list=PLMPgoZdlPumc_llMSynz5BqT8dTwr5sZ2&index=1&ab_channel=TheCodeCreative
@@ -18,6 +18,7 @@ const AudioVisualizer = () => {
   const audioCtx = useRef<AudioContext | null>(null)
   const canvasElement = useRef<HTMLCanvasElement | null>(null)
   const canvasCtx = useRef<CanvasRenderingContext2D | null>(null)
+  const [graphRatio, setGraphRatio] = useState<number>(0)
 
   useEffect(() => {
     audioCtx.current = new AudioContext()
@@ -26,15 +27,12 @@ const AudioVisualizer = () => {
   useEffect(() => {
     if (!canvasElement.current) return
 
-    canvasElement.current.width = window.innerWidth * Math.min(window.devicePixelRatio, 2);
-    canvasElement.current.height = window.innerHeight * Math.min(window.devicePixelRatio, 2);
+    canvasElement.current.width = window.innerWidth;
+    canvasElement.current.height = window.innerHeight;
+    
+    setGraphRatio(window.innerHeight / 2 / 255)
 
     canvasCtx.current = canvasElement.current.getContext('2d', { alpha: false })
-
-    if (!canvasCtx.current) return
-
-    canvasCtx.current.fillStyle = '#FF00A8'
-    canvasCtx.current.fillRect(10, 10, 20, 100)
   }, [])
 
   const visualizerAnimation = (
@@ -44,25 +42,30 @@ const AudioVisualizer = () => {
   ) => {
     if (!canvasCtx.current || !canvasElement.current) return
 
-    // const barWidth = (canvasElement.current.width / 2) / bufferLength
-    const barWidth = canvasElement.current.width / bufferLength
-    let barHeight
-    let x = 0
+    const barWidth = (canvasElement.current.width / 2) / bufferLength
+    let firstX = 0
+    let secondX = bufferLength * barWidth
     
     canvasCtx.current.fillStyle = '#FF00A8'
     canvasCtx.current.clearRect(0, 0, canvasElement.current.width, canvasElement.current.height)
     analyser.getByteFrequencyData(dataArray)
 
-    // for (let index = 0; index < bufferLength; index++) {
-    //   barHeight = dataArray[index]
-    //   canvasCtx.current.fillRect(canvasElement.current.width / 2 - x, canvasElement.current.height - barHeight, barWidth, barHeight)
-    //   x += barWidth
-    // }
-
     for (let index = 0; index < bufferLength; index++) {
-      barHeight = dataArray[index]
-      canvasCtx.current.fillRect(x, canvasElement.current.height - barHeight, barWidth, barHeight)
-      x += barWidth
+      canvasCtx.current.fillRect(
+        canvasElement.current.width / 2 - firstX,
+        canvasElement.current.height / 2 - (dataArray[index] * graphRatio) / 2,
+        barWidth,
+        dataArray[index] * graphRatio
+      )
+      canvasCtx.current.fillRect(
+        secondX,
+        canvasElement.current.height / 2 - (dataArray[index] * graphRatio) / 2,
+        barWidth,
+        dataArray[index] * graphRatio
+      )
+
+      firstX += barWidth
+      secondX += barWidth
     }
 
     requestAnimationFrame(() => visualizerAnimation(bufferLength, analyser, dataArray))
@@ -77,7 +80,7 @@ const AudioVisualizer = () => {
 
     const analyser = audioCtx.current.createAnalyser()
     analyser.connect(audioCtx.current.destination)
-    analyser.fftSize = 256
+    analyser.fftSize = 1024
     
     const audioSource = audioCtx.current.createMediaElementSource(audio)
     audioSource.connect(analyser)
@@ -87,8 +90,6 @@ const AudioVisualizer = () => {
     audio.play()
 
     visualizerAnimation(bufferLength, analyser, dataArray)
-
-    // Tuto advancement : https://youtu.be/VXWvfrmpapI?feature=shared&t=2132
   }
 
   return (
