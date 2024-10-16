@@ -37,6 +37,9 @@ const AudioVisualizer = () => {
     setGraphRatio(window.innerHeight / 2 / 255)
 
     canvasCtx.current = canvasElement.current.getContext('2d', { alpha: false })
+
+    if (!canvasCtx.current) return
+    canvasCtx.current.fillStyle = '#FF00A8'
   }, [])
 
   const visualizerAnimation = (
@@ -49,26 +52,55 @@ const AudioVisualizer = () => {
     if (!canvasCtx.current || !canvasElement.current) return
 
     const barWidth = (canvasElement.current.width / 2) / bufferLength
+    const dotsMaxSize = 4
     let firstX = 0
     let secondX = bufferLength * barWidth
+    let normalizedData = 0
     
-    canvasCtx.current.fillStyle = '#FF00A8'
     canvasCtx.current.clearRect(0, 0, canvasElement.current.width, canvasElement.current.height)
     analyser.getByteFrequencyData(dataArray)
 
     for (let index = 0; index < bufferLength; index++) {
-      canvasCtx.current.fillRect(
-        canvasElement.current.width / 2 - firstX,
-        canvasElement.current.height / 2 - (dataArray[index] * graphRatio) / 2,
-        barWidth,
-        dataArray[index] * graphRatio
-      )
-      canvasCtx.current.fillRect(
-        secondX,
-        canvasElement.current.height / 2 - (dataArray[index] * graphRatio) / 2,
-        barWidth,
-        dataArray[index] * graphRatio
-      )
+      normalizedData = dataArray[index] * graphRatio
+      // Bar graph
+      // canvasCtx.current.fillRect(
+      //   canvasElement.current.width / 2 - firstX,
+      //   canvasElement.current.height / 2 - (normalizedData) / 2,
+      //   barWidth - 4,
+      //   normalizedData
+      // )
+      // canvasCtx.current.fillRect(
+      //   secondX,
+      //   canvasElement.current.height / 2 - (normalizedData) / 2,
+      //   barWidth - 4,
+      //   normalizedData
+      // )
+
+      // Dotted lines
+      canvasCtx.current.beginPath()
+      for (let subIndex = 0; subIndex < normalizedData; subIndex++) {
+        if (subIndex % 16 === 0) {
+          canvasCtx.current.moveTo(firstX, subIndex)
+          canvasCtx.current.arc(
+            canvasElement.current.width / 2 - firstX,
+            canvasElement.current.height / 2 - (normalizedData) / 2 + subIndex,
+            (subIndex * subIndex) * (dotsMaxSize * dotsMaxSize / (normalizedData * -normalizedData)) + ((dotsMaxSize * dotsMaxSize / normalizedData) * subIndex),
+            0,
+            Math.PI * 2
+          )
+          
+          canvasCtx.current.moveTo(secondX, subIndex)
+          canvasCtx.current.arc(
+            secondX,
+            canvasElement.current.height / 2 - (normalizedData) / 2 + subIndex,
+            (subIndex * subIndex) * (dotsMaxSize * dotsMaxSize / (normalizedData * -normalizedData)) + ((dotsMaxSize * dotsMaxSize / normalizedData) * subIndex),
+            0,
+            Math.PI * 2
+          )
+        }
+      }
+      canvasCtx.current.closePath()
+      canvasCtx.current.fill()
 
       firstX += barWidth
       secondX += barWidth
@@ -76,15 +108,17 @@ const AudioVisualizer = () => {
 
     if (Date.now() <= timestamp + audioDuration * 1000 + 500) {
       requestAnimationFrame(() => visualizerAnimation(bufferLength, analyser, dataArray, timestamp, audioDuration))
+    } else {
+      canvasCtx.current.clearRect(0, 0, canvasElement.current.width, canvasElement.current.height)
     }
   }
 
-  const playSound = async () => {
+  const playSound = () => {
     if (!audioCtx.current || !audio.current) return
 
     const analyser = audioCtx.current.createAnalyser()
     analyser.connect(audioCtx.current.destination)
-    analyser.fftSize = 1024
+    analyser.fftSize = 128
     
     const audioSource = audioCtx.current.createMediaElementSource(audio.current)
     audioSource.connect(analyser)
