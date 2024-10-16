@@ -35,6 +35,10 @@ body {
     justify-content: center;
     align-items: center;
   }
+
+  &--with-positionned-children {
+    position: relative;
+  }
 }
 
 .grid {

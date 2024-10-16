@@ -1,0 +1,58 @@
+.gradients-background {
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow-x: clip;
+
+  &__shape {
+    position: absolute;
+    z-index: -1;
+    opacity: .2;
+    mix-blend-mode: multiply;
+    filter: blur(97px);
+    transform-origin: 0 0;
+    animation: subtleMove var(--duration) ease-in-out 0s infinite alternate;
+    
+    &--1 {
+      --transformOriginAlt: 10% 0%;
+      --translateEnd: 20%, 10%;
+      --duration: 4s;
+
+      opacity: .5;
+      top: -10%;
+      left: 30%;
+    }
+
+    &--2 {
+      --transformOriginAlt: 0 10%;
+      --translateEnd: -10%, -25%;
+      --duration: 6s;
+
+      top: 33%;
+      left: -10%;
+    }
+
+    &--3 {
+      --transformOriginAlt: 10% -30%;
+      --translateEnd: 50%, 10%;
+      --duration: 3s;
+
+      width: 666px;
+      height: 697px;
+      top: 30%;
+      left: 33%;
+      background-color: #FFEC7E;
+    }
+  }
+
+  @keyframes subtleMove {
+    to {
+      filter: blur(72px);
+      transform-origin: var(--transformOriginAlt);
+      transform: translate(var(--translateEnd));
+    }
+  }
+}
