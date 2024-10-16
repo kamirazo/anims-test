@@ -15,10 +15,12 @@ import './audioVisualizer.scss'
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API
 
 const AudioVisualizer = () => {
+  const audio = useRef<HTMLAudioElement | null>(null)
   const audioCtx = useRef<AudioContext | null>(null)
+  const analyserNode = useRef<AnalyserNode | null>(null)
+  const audioDataArray = useRef<Uint8Array | null>(null)
   const canvasElement = useRef<HTMLCanvasElement | null>(null)
   const canvasCtx = useRef<CanvasRenderingContext2D | null>(null)
-  const audio = useRef<HTMLAudioElement | null>(null)
   const [graphRatio, setGraphRatio] = useState<number>(0)
 
   const draw = (
@@ -85,21 +87,24 @@ const AudioVisualizer = () => {
   }
 
   const visualizerAnimation = (
-    bufferLength: number,
-    analyser: AnalyserNode,
-    dataArray: Uint8Array,
     timestamp: number,
     audioDuration: number
   ) => {
-    if (!canvasCtx.current || !canvasElement.current) return
+    if (
+      !canvasCtx.current 
+      || !canvasElement.current
+      || !analyserNode.current
+      || !audioDataArray.current
+    ) return
 
     canvasCtx.current.clearRect(0, 0, canvasElement.current.width, canvasElement.current.height)
-    analyser.getByteFrequencyData(dataArray)
+    analyserNode.current.getByteFrequencyData(audioDataArray.current)
+    const bufferLength = analyserNode.current.frequencyBinCount
 
-    draw(bufferLength, dataArray, 'bars')
+    draw(bufferLength, audioDataArray.current, 'dots')
 
     if (Date.now() <= timestamp + audioDuration * 1000 + 500) {
-      requestAnimationFrame(() => visualizerAnimation(bufferLength, analyser, dataArray, timestamp, audioDuration))
+      requestAnimationFrame(() => visualizerAnimation(timestamp, audioDuration))
     } else {
       canvasCtx.current.clearRect(0, 0, canvasElement.current.width, canvasElement.current.height)
     }
@@ -108,20 +113,11 @@ const AudioVisualizer = () => {
   const playSound = () => {
     if (!audioCtx.current || !audio.current) return
 
-    const analyser = audioCtx.current.createAnalyser()
-    analyser.connect(audioCtx.current.destination)
-    analyser.fftSize = 128
-    
-    const audioSource = audioCtx.current.createMediaElementSource(audio.current)
-    audioSource.connect(analyser)
-    
-    const bufferLength = analyser.frequencyBinCount
-    const dataArray = new Uint8Array(bufferLength)
-
     if (audio.current.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
       audio.current.play()
-      visualizerAnimation(bufferLength, analyser, dataArray, Date.now(), audio.current.duration)
+      visualizerAnimation(Date.now(), audio.current.duration)
     }
+
   }
 
   useEffect(() => {
@@ -129,6 +125,15 @@ const AudioVisualizer = () => {
     audio.current = new Audio()
     audio.current.src = '/audio/thank-for-watching-this-video-voice.mp3'
     audio.current.load()
+
+    analyserNode.current = audioCtx.current.createAnalyser()
+    analyserNode.current.connect(audioCtx.current.destination)
+    analyserNode.current.fftSize = 128
+    
+    const audioSource = audioCtx.current.createMediaElementSource(audio.current)
+    audioSource.connect(analyserNode.current)
+    
+    audioDataArray.current = new Uint8Array(analyserNode.current.frequencyBinCount)
   }, [])
 
   useEffect(() => {
