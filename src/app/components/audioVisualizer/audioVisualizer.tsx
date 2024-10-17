@@ -14,7 +14,12 @@ import './audioVisualizer.scss'
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API
 
-const AudioVisualizer = () => {
+interface AudioVisualizerProps {
+  type?: 'bars' | 'dots' | 'ellipse',
+  fftSize?: number
+}
+
+const AudioVisualizer = ({type = 'bars', fftSize = 128}: AudioVisualizerProps) => {
   const audio = useRef<HTMLAudioElement | null>(null)
   const audioCtx = useRef<AudioContext | null>(null)
   const analyserNode = useRef<AnalyserNode | null>(null)
@@ -26,7 +31,6 @@ const AudioVisualizer = () => {
   const draw = (
     bufferLength: number,
     dataArray: Uint8Array,
-    type: 'bars' | 'dots' | 'ellipse'
   ) => {
     if (!canvasElement.current || !canvasCtx.current) return
 
@@ -135,7 +139,7 @@ const AudioVisualizer = () => {
     analyserNode.current.getByteFrequencyData(audioDataArray.current)
     const bufferLength = analyserNode.current.frequencyBinCount
 
-    draw(bufferLength, audioDataArray.current, 'ellipse')
+    draw(bufferLength, audioDataArray.current)
 
     if (Date.now() <= timestamp + audioDuration * 1000 + 500) {
       requestAnimationFrame(() => visualizerAnimation(timestamp, audioDuration))
@@ -161,13 +165,13 @@ const AudioVisualizer = () => {
 
     analyserNode.current = audioCtx.current.createAnalyser()
     analyserNode.current.connect(audioCtx.current.destination)
-    analyserNode.current.fftSize = 128
+    analyserNode.current.fftSize = fftSize
     
     const audioSource = audioCtx.current.createMediaElementSource(audio.current)
     audioSource.connect(analyserNode.current)
     
     audioDataArray.current = new Uint8Array(analyserNode.current.frequencyBinCount)
-  }, [])
+  }, [fftSize])
 
   useEffect(() => {
     if (!canvasElement.current) return
