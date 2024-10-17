@@ -26,7 +26,7 @@ const AudioVisualizer = () => {
   const draw = (
     bufferLength: number,
     dataArray: Uint8Array,
-    type: 'bars' | 'dots'
+    type: 'bars' | 'dots' | 'ellipse'
   ) => {
     if (!canvasElement.current || !canvasCtx.current) return
 
@@ -41,44 +41,78 @@ const AudioVisualizer = () => {
     for (let index = 0; index < bufferLength; index++) {
       normalizedData = dataArray[index] * graphRatio
 
-      if (type === 'bars') {
-        canvasCtx.current.fillRect(
-          canvasElement.current.width / 2 - firstX,
-          canvasElement.current.height / 2 - (normalizedData) / 2,
-          barWidth - 4,
-          normalizedData
-        )
-        canvasCtx.current.fillRect(
-          secondX,
-          canvasElement.current.height / 2 - (normalizedData) / 2,
-          barWidth - 4,
-          normalizedData
-        )
-      } else {
-        canvasCtx.current.beginPath()
-        for (let subIndex = 0; subIndex < normalizedData; subIndex++) {
-          if (subIndex % dotsVerticalSpacing === 0) {
-            canvasCtx.current.moveTo(firstX, subIndex)
-            canvasCtx.current.arc(
-              canvasElement.current.width / 2 - firstX,
-              canvasElement.current.height / 2 - (normalizedData) / 2 + subIndex,
-              (subIndex * subIndex) * (dotsMaxSize * dotsMaxSize / (normalizedData * -normalizedData)) + ((dotsMaxSize * dotsMaxSize / normalizedData) * subIndex),
-              0,
-              Math.PI * 2
-            )
-            
-            canvasCtx.current.moveTo(secondX, subIndex)
-            canvasCtx.current.arc(
-              secondX,
-              canvasElement.current.height / 2 - (normalizedData) / 2 + subIndex,
-              (subIndex * subIndex) * (dotsMaxSize * dotsMaxSize / (normalizedData * -normalizedData)) + ((dotsMaxSize * dotsMaxSize / normalizedData) * subIndex),
-              0,
-              Math.PI * 2
-            )
+      switch (type) {
+        case 'dots':
+          canvasCtx.current.beginPath()
+          for (let subIndex = 0; subIndex < normalizedData; subIndex++) {
+            if (subIndex % dotsVerticalSpacing === 0) {
+              canvasCtx.current.moveTo(firstX, subIndex)
+              canvasCtx.current.arc(
+                canvasElement.current.width / 2 - firstX,
+                canvasElement.current.height / 2 - (normalizedData) / 2 + subIndex,
+                (subIndex * subIndex) * (dotsMaxSize * dotsMaxSize / (normalizedData * -normalizedData)) + ((dotsMaxSize * dotsMaxSize / normalizedData) * subIndex),
+                0,
+                Math.PI * 2
+              )
+              
+              canvasCtx.current.moveTo(secondX, subIndex)
+              canvasCtx.current.arc(
+                secondX,
+                canvasElement.current.height / 2 - (normalizedData) / 2 + subIndex,
+                (subIndex * subIndex) * (dotsMaxSize * dotsMaxSize / (normalizedData * -normalizedData)) + ((dotsMaxSize * dotsMaxSize / normalizedData) * subIndex),
+                0,
+                Math.PI * 2
+              )
+            }
           }
-        }
-        canvasCtx.current.closePath()
-        canvasCtx.current.fill()
+          canvasCtx.current.closePath()
+          canvasCtx.current.fill()
+          break
+        case "ellipse":
+          canvasCtx.current.beginPath()
+          for (let subIndex = 0; subIndex < normalizedData; subIndex++) {
+            if (subIndex % dotsVerticalSpacing === 0) {
+              canvasCtx.current.moveTo(firstX, subIndex)
+              canvasCtx.current.ellipse(
+                canvasElement.current.width / 2 - firstX,
+                canvasElement.current.height / 2 - (normalizedData) / 2 + subIndex,
+                (subIndex * subIndex) * (dotsMaxSize * dotsMaxSize / (normalizedData * -normalizedData)) + ((dotsMaxSize * dotsMaxSize / normalizedData) * subIndex),
+                ((subIndex * subIndex) * (dotsMaxSize * dotsMaxSize / (normalizedData * -normalizedData)) + ((dotsMaxSize * dotsMaxSize / normalizedData) * subIndex)) / 2,
+                -75 * Math.PI/180,
+                0,
+                2 * Math.PI
+              )
+              
+              canvasCtx.current.moveTo(secondX, subIndex)
+              canvasCtx.current.ellipse(
+                secondX,
+                canvasElement.current.height / 2 - (normalizedData) / 2 + subIndex,
+                (subIndex * subIndex) * (dotsMaxSize * dotsMaxSize / (normalizedData * -normalizedData)) + ((dotsMaxSize * dotsMaxSize / normalizedData) * subIndex),
+                ((subIndex * subIndex) * (dotsMaxSize * dotsMaxSize / (normalizedData * -normalizedData)) + ((dotsMaxSize * dotsMaxSize / normalizedData) * subIndex)) / 2,
+                -75 * Math.PI/180,
+                0,
+                2 * Math.PI
+              );
+            }
+          }
+          canvasCtx.current.closePath()
+          canvasCtx.current.fill()
+          break
+        case 'bars':
+        default:
+          canvasCtx.current.fillRect(
+            canvasElement.current.width / 2 - firstX,
+            canvasElement.current.height / 2 - (normalizedData) / 2,
+            barWidth - 4,
+            normalizedData
+          )
+          canvasCtx.current.fillRect(
+            secondX,
+            canvasElement.current.height / 2 - (normalizedData) / 2,
+            barWidth - 4,
+            normalizedData
+          )
+          break
       }
 
       firstX += barWidth
@@ -101,7 +135,7 @@ const AudioVisualizer = () => {
     analyserNode.current.getByteFrequencyData(audioDataArray.current)
     const bufferLength = analyserNode.current.frequencyBinCount
 
-    draw(bufferLength, audioDataArray.current, 'dots')
+    draw(bufferLength, audioDataArray.current, 'ellipse')
 
     if (Date.now() <= timestamp + audioDuration * 1000 + 500) {
       requestAnimationFrame(() => visualizerAnimation(timestamp, audioDuration))
@@ -117,7 +151,6 @@ const AudioVisualizer = () => {
       audio.current.play()
       visualizerAnimation(Date.now(), audio.current.duration)
     }
-
   }
 
   useEffect(() => {
