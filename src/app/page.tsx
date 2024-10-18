@@ -1,3 +1,4 @@
+import AudioPlayer from "./components/audioPlayer/audioPlayer"
 import AudioVisualizer from "./components/audioVisualizer/audioVisualizer"
 import GradientsBackground from "./components/gradientsBackground/gradientsBackground"
 import WordHighlight from "./components/wordHighlight/wordHighlight"
@@ -17,6 +18,8 @@ const Home = () => {
           </WordHighlight>
           Dolore in molestias sed ad quia.
         </h1>
+
+        <AudioPlayer audioFileURL="/audio/marsorbit-voice.mp3" />
       </section>
       
       <section className="section section--no-padding">
