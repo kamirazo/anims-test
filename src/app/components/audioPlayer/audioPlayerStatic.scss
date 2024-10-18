@@ -1,0 +1,29 @@
+.audio-player-static {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: fit-content;
+  padding: 0 10px;
+  gap: 10px;
+  background-color: rgba(0 0 0 / .2);
+
+  &__visualizer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 86px;
+    height: 32px;
+
+    &__bar {
+      width: 2px;
+      height: var(--height);
+      opacity: .66;
+      background-color: white;
+      border-radius: 1px;
+
+      &--opaque {
+        opacity: 1;
+      }
+    }
+  }
+}
